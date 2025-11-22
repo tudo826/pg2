@@ -155,30 +155,31 @@
             color: #212529;
         }
         
-        /* 列印樣式 */
+        /* 優化的列印樣式 - 放大字體並調整間距 */
         @media print {
             body {
                 background: white !important;
                 padding: 0 !important;
                 margin: 0 !important;
-                font-size: 10pt !important;
+                font-size: 12pt !important; /* 適中的字體大小 */
                 font-family: 'Microsoft JhengHei', Arial, sans-serif !important;
+                line-height: 1.2 !important; /* 緊湊的行高 */
             }
             .container {
                 max-width: 100% !important;
                 box-shadow: none !important;
                 border-radius: 0 !important;
                 margin: 0 !important;
-                padding: 10mm !important;
+                padding: 5mm !important; /* 減少內邊距 */
             }
             .no-print, .tabs, .btn, .tab-button {
                 display: none !important;
             }
             
             .print-section {
-                margin: 3mm 0 !important;
-                padding: 2mm !important;
-                border: 0.5px solid #999 !important;
+                margin: 2mm 0 !important; /* 減少間距 */
+                padding: 2mm !important; /* 減少內距 */
+                border: 1px solid #999 !important;
                 background: white !important;
                 page-break-inside: avoid !important;
             }
@@ -186,50 +187,75 @@
             .print-grid {
                 display: grid !important;
                 grid-template-columns: 1fr 1fr !important;
-                gap: 2mm !important;
+                gap: 2mm !important; /* 減少間距 */
                 margin-bottom: 2mm !important;
             }
             
             .print-title {
                 font-weight: bold !important;
-                margin-bottom: 1mm !important;
-                font-size: 11pt !important;
-                border-bottom: 0.5px solid #333 !important;
+                margin-bottom: 1mm !important; /* 減少間距 */
+                font-size: 14pt !important; /* 適中的標題大小 */
+                border-bottom: 1px solid #333 !important;
                 padding-bottom: 0.5mm !important;
             }
             
             .print-item {
-                margin: 0.5mm 0 !important;
-                font-size: 9pt !important;
+                margin: 0.5mm 0 !important; /* 減少間距 */
+                font-size: 11pt !important; /* 適中的內容大小 */
+                line-height: 1.2 !important; /* 緊湊的行高 */
             }
             
             .print-score {
                 font-weight: bold !important;
                 background: #f8f9fa !important;
-                padding: 1mm !important;
+                padding: 1mm !important; /* 減少內距 */
                 border-radius: 1mm !important;
-                font-size: 9pt !important;
+                font-size: 11pt !important; /* 適中的分數大小 */
                 text-align: center !important;
+                margin-top: 1mm !important;
             }
             
             .print-total {
                 font-weight: bold !important;
-                font-size: 14pt !important;
+                font-size: 16pt !important; /* 適中的總分大小 */
                 text-align: center !important;
-                margin: 3mm 0 !important;
-                padding: 2mm !important;
+                margin: 3mm 0 !important; /* 減少間距 */
+                padding: 2mm !important; /* 減少內距 */
                 background: #e9ecef !important;
                 border: 1px solid #333 !important;
             }
             
             .print-advice {
                 font-weight: bold !important;
-                margin: 2mm 0 !important;
-                padding: 2mm !important;
+                margin: 2mm 0 !important; /* 減少間距 */
+                padding: 2mm !important; /* 減少內距 */
                 background: #d4edda !important;
                 border: 1px solid #28a745 !important;
                 text-align: center !important;
-                font-size: 11pt !important;
+                font-size: 12pt !important; /* 適中的建議大小 */
+            }
+            
+            /* 確保所有內容在一頁內 */
+            .print-page {
+                height: 100%;
+                width: 100%;
+                page-break-after: always;
+            }
+            
+            /* 調整表格樣式以節省空間 */
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 10pt;
+                margin: 1mm 0;
+            }
+            th, td {
+                border: 1px solid #ddd;
+                padding: 1mm;
+                text-align: left;
+            }
+            th {
+                background-color: #f5f5f5;
             }
         }
         
@@ -945,7 +971,7 @@
             }
         }
 
-        // 列印單一問卷記錄
+        // 列印單一問卷記錄 - 優化為一頁A4
         function printSingleRecord(index) {
             const record = records[index];
             if (!record) {
@@ -956,10 +982,10 @@
             console.log('列印記錄:', record);
 
             const printHTML = `
-                <div style="padding: 10mm; font-family: Microsoft JhengHei, Arial, sans-serif; font-size: 10pt;">
+                <div class="print-page">
                     <div style="text-align: center; margin-bottom: 5mm; border-bottom: 1px solid #333; padding-bottom: 2mm;">
                         <h1 style="margin: 0; font-size: 16pt;">PG-SGA 營養評估問卷</h1>
-                        <p style="margin: 1mm 0; font-size: 10pt;">列印日期: ${new Date().toLocaleDateString('zh-TW')}</p>
+                        <p style="margin: 1mm 0; font-size: 11pt;">列印日期: ${new Date().toLocaleDateString('zh-TW')}</p>
                     </div>
                     
                     <!-- 基本資料 -->
@@ -1043,7 +1069,7 @@
                     ${record.additionalNotes ? `
                     <div class="print-section">
                         <div class="print-title">其他數據</div>
-                        <div class="print-item" style="font-size: 9pt; line-height: 1.4;">${record.additionalNotes}</div>
+                        <div class="print-item" style="font-size: 10pt; line-height: 1.2;">${record.additionalNotes}</div>
                     </div>
                     ` : ''}
 
@@ -1056,7 +1082,7 @@
                         評估建議: ${record.scores.advice}
                     </div>
 
-                    <div style="text-align: center; margin-top: 3mm; font-size: 8pt; color: #666;">
+                    <div style="text-align: center; margin-top: 3mm; font-size: 9pt; color: #666;">
                         <p>PG-SGA 營養評估問卷 - 本問卷僅供醫療專業人員使用</p>
                     </div>
                 </div>
@@ -1080,7 +1106,8 @@
                             font-family: Microsoft JhengHei, Arial, sans-serif;
                             margin: 0;
                             padding: 0;
-                            font-size: 10pt;
+                            font-size: 12pt;
+                            line-height: 1.2;
                         }
                         @media print {
                             body {
@@ -1089,13 +1116,18 @@
                             }
                             @page {
                                 size: A4;
-                                margin: 10mm;
+                                margin: 5mm;
                             }
                         }
+                        .print-page {
+                            height: 100%;
+                            width: 100%;
+                            page-break-after: always;
+                        }
                         .print-section {
-                            margin: 3mm 0;
+                            margin: 2mm 0;
                             padding: 2mm;
-                            border: 0.5px solid #999;
+                            border: 1px solid #999;
                             background: white;
                             page-break-inside: avoid;
                         }
@@ -1108,25 +1140,27 @@
                         .print-title {
                             font-weight: bold;
                             margin-bottom: 1mm;
-                            font-size: 11pt;
-                            border-bottom: 0.5px solid #333;
+                            font-size: 14pt;
+                            border-bottom: 1px solid #333;
                             padding-bottom: 0.5mm;
                         }
                         .print-item {
                             margin: 0.5mm 0;
-                            font-size: 9pt;
+                            font-size: 11pt;
+                            line-height: 1.2;
                         }
                         .print-score {
                             font-weight: bold;
                             background: #f8f9fa;
                             padding: 1mm;
                             border-radius: 1mm;
-                            font-size: 9pt;
+                            font-size: 11pt;
                             text-align: center;
+                            margin-top: 1mm;
                         }
                         .print-total {
                             font-weight: bold;
-                            font-size: 14pt;
+                            font-size: 16pt;
                             text-align: center;
                             margin: 3mm 0;
                             padding: 2mm;
@@ -1140,7 +1174,7 @@
                             background: #d4edda;
                             border: 1px solid #28a745;
                             text-align: center;
-                            font-size: 11pt;
+                            font-size: 12pt;
                         }
                     </style>
                 </head>
